@@ -1,0 +1,421 @@
+{
+	"info": {
+		"_postman_id": "a424c541-1cb2-4148-b066-62cc6b049f30",
+		"name": "User",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33683764"
+	},
+	"item": [
+		{
+			"name": "Dispatch login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODIzYzI0Zjc3ZjBlZjFhMGUwOTFlYSIsImlhdCI6MTczNjU5OTc4MiwiZXhwIjoxNzM2Njg2MTgyfQ.QHCyId6G-cPAKw9jp27jKSAEPGz3aUD9D9_t94MxMdc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"emailOrAdminName\": \"dispatchAdmin\",\r\n  \"password\": \"securePassword123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3004/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create outlets",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODY0MGY3OGJmZTZkYmMzOWU3NTljOSIsInVzZXJUeXBlIjoiZGlzcGF0Y2giLCJpYXQiOjE3MzcwNDU5NzEsImV4cCI6MTczNzEzMjM3MX0.TiZ0irldODMXy5nqM6R095IJfrCeKj1PJ9rAiuTg7ks",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"outletName\": \"Outlet 1\",\r\n  \"outletAddress\": \"1600 Amphitheatre Parkway, Mountain View, CA\",\r\n  \"registrationNumber\": \"REG123452\",\r\n  \"emailAddress\": \"kirushikiru@gmail.com\",\r\n  \"password\": \"securepassword123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3004/api/outlet/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"api",
+						"outlet",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update outlet id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "PS.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3004/api/outlet/update/67893928f9b9eaf6030a269d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"api",
+						"outlet",
+						"update",
+						"67893928f9b9eaf6030a269d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3004/api/outlet/getall",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"api",
+						"outlet",
+						"getall"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3004/api/outlet/get/67893928f9b9eaf6030a269d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"api",
+						"outlet",
+						"get",
+						"67893928f9b9eaf6030a269d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete by id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3004/api/outlet/delete/67893a34f9b9eaf6030a26a3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"api",
+						"outlet",
+						"delete",
+						"67893a34f9b9eaf6030a26a3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create consumer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userType\": \"consumer\",\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"Doe\",\r\n  \"email\": \"john.doe@example.com\",\r\n  \"NIC\": \"123456789V\",\r\n  \"phoneNumber\": \"+94123456789\",\r\n  \"password\": \"securepassword123\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3004/api/users/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"api",
+						"users",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create business",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userType\": \"businessIndustry\",\r\n  \"companyName\": \"TechCorp Ltd.\",\r\n  \"email\": \"info@techcorp.com\",\r\n  \"registrationNumber\": \"REG123456\",\r\n  \"phoneNumber\": \"+941234567890\",\r\n  \"businessCategory\": \"Technology\",\r\n  \"password\": \"securepassword12\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3004/api/users/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"api",
+						"users",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user by id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "PS.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3004/api/users/update/6789410088531cda18349d02",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"api",
+						"users",
+						"update",
+						"6789410088531cda18349d02"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3004/api/users/get/6789410088531cda18349d02",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"api",
+						"users",
+						"get",
+						"6789410088531cda18349d02"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all user by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3004/api/users/getall",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"api",
+						"users",
+						"getall"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create gas request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"gasType\": \"LPG\",\r\n  \"gasWeight\": 12.5,\r\n  \"quantity\": 2,\r\n  \"preferDeliveryDate\": \"2024-01-20\",\r\n  \"exactAddress\": \"1600 Amphitheatre Parkway, Mountain View, CA\",\r\n  \"outletDetails\": \"67893928f9b9eaf6030a269d\", \r\n  \"userDetails\":\"6789416788531cda18349d08\",\r\n  \"message\": \"Please deliver by afternoon\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3004/api/gasrequest/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"api",
+						"gasrequest",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update gas request",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "status",
+							"value": "pending",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3004/api/gasrequest/update/6789460df6553bc842f460bd",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"api",
+						"gasrequest",
+						"update",
+						"6789460df6553bc842f460bd"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get request by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3004/api/gasrequest/get/6789460df6553bc842f460bd",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"api",
+						"gasrequest",
+						"get",
+						"6789460df6553bc842f460bd"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all request by outlets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3004/api/gasrequest/getall/outlet/67893928f9b9eaf6030a269d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"api",
+						"gasrequest",
+						"getall",
+						"outlet",
+						"67893928f9b9eaf6030a269d"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
