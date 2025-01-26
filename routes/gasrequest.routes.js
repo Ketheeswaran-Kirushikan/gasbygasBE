@@ -12,7 +12,7 @@ router.post(
 
 // Update Gas Request by ID
 router.put(
-  "/update/:id",
+  "/update/:referenceNumber",
   multer.single("file"), // For file upload
   GasRequestController.updateGasRequestById
 );
@@ -25,5 +25,7 @@ router.get("/get/:id", GasRequestController.getGasRequestById);
 
 // Get All Gas Requests by Outlet ID
 router.get("/getall/outlet/:outletId", GasRequestController.getAllGasRequestsByOutlet);
+
+router.get("/getall/user/:userId", GasRequestController.getAllGasRequestsByUser);
 
 module.exports = router;

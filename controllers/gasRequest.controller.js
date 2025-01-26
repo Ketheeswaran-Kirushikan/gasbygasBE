@@ -12,13 +12,22 @@ const createGasRequest = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 // Update Gas Request by ID
 const updateGasRequestById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const updatedGasRequest = await GasRequestService.updateGasRequestById(id, req.body, req.file);
+    // Log incoming data
+    console.log("Incoming Data:");
+    console.log("Reference Number:", req.params.referenceNumber);
+    console.log("Request Body:", req.body);
+    if (req.file) {
+      console.log("Uploaded File:", req.file);
+    } else {
+      console.log("No file uploaded");
+    }
 
+    const { referenceNumber } = req.params;
+    const updatedGasRequest = await GasRequestService.updateGasRequestById(referenceNumber, req.body, req.file);
+    
     if (!updatedGasRequest) {
       return res.status(404).json({ error: "Gas Request not found" });
     }
@@ -28,9 +37,11 @@ const updateGasRequestById = async (req, res) => {
       gasRequest: updatedGasRequest,
     });
   } catch (error) {
+    console.error("Error updating Gas Request:", error.message);
     res.status(500).json({ error: error.message });
   }
 };
+
 
 // Delete Gas Request by ID
 const deleteGasRequestById = async (req, res) => {
@@ -76,10 +87,27 @@ const getAllGasRequestsByOutlet = async (req, res) => {
   }
 };
 
+// Get All Gas Requests by User ID
+const getAllGasRequestsByUser = async (req, res) => {
+  try {
+    const { userId } = req.params; // Get userId from request parameters
+    const gasRequests = await GasRequestService.getAllGasRequestsByUser(userId);
+
+    if (!gasRequests.length) {
+      return res.status(404).json({ error: "No gas requests found for this user" });
+    }
+
+    res.status(200).json(gasRequests);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createGasRequest,
   updateGasRequestById,
   deleteGasRequestById,
   getGasRequestById,
   getAllGasRequestsByOutlet,
+  getAllGasRequestsByUser, // Add this function
 };

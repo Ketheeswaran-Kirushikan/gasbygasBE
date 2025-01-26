@@ -8,12 +8,13 @@ const User = require("../models/user.model"); // Unified User schema for both co
 const SECRET_KEY = process.env.JWT_SECRET_KEY || "your_secret_key";
 
 // Login Service
+// Login Service
 const loginUser = async (emailOrAdminName, password) => {
   // Define models and their corresponding identifiers and user types
   const models = [
     { model: Dispatch, identifier: "adminName", userType: "dispatch" },
     { model: Outlet, identifier: "emailAddress", userType: "outlet" },
-    { model: User, identifier: "email", userType: "user" }, // Unified user model
+    { model: User, identifier: "email", userType: "consumer" }, // Consumer users
   ];
 
   // Iterate through each model to find the user
@@ -35,7 +36,7 @@ const loginUser = async (emailOrAdminName, password) => {
       return {
         token,
         user: {
-          id: user._id,
+          id: user._id, // Explicitly include the userId
           userType,
           ...user.toObject(),
         },

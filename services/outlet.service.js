@@ -56,6 +56,7 @@ const createOutlet = async (data, files) => {
 
     const outletData = {
       ...data,
+      userType: "outlet", // Set userType for outlet
       password: hashedPassword, // Store the hashed password
       image: imageUrl,
       certificate: certificateUrl,
@@ -94,6 +95,7 @@ const createOutlet = async (data, files) => {
         id: newOutlet._id,
         outletName: newOutlet.outletName,
         emailAddress: newOutlet.emailAddress,
+        userType: newOutlet.userType, // Include userType in the response
         createdAt: newOutlet.createdAt,
       },
     };
@@ -133,7 +135,18 @@ const updateOutletById = async (id, data, files) => {
     }
 
     // Update the outlet in the database
-    return await Outlet.findByIdAndUpdate(id, updatedData, { new: true });
+    const updatedOutlet = await Outlet.findByIdAndUpdate(id, updatedData, { new: true });
+
+    // Return updated outlet data
+    return {
+      outlet: {
+        id: updatedOutlet._id,
+        outletName: updatedOutlet.outletName,
+        emailAddress: updatedOutlet.emailAddress,
+        userType: updatedOutlet.userType, // Include userType in the response
+        updatedAt: updatedOutlet.updatedAt,
+      },
+    };
   } catch (error) {
     console.error("Error in updateOutletById:", error.message);
     throw new Error(error.message);
@@ -142,18 +155,40 @@ const updateOutletById = async (id, data, files) => {
 
 // Delete Outlet by ID
 const deleteOutletById = async (id) => {
-  return await Outlet.findByIdAndDelete(id);
+  const deletedOutlet = await Outlet.findByIdAndDelete(id);
+  return {
+    id: deletedOutlet?._id,
+    userType: deletedOutlet?.userType, // Include userType in the response
+    message: "Outlet deleted successfully",
+  };
 };
 
 // Get Outlet by ID
 const getOutletById = async (id) => {
-  return await Outlet.findById(id);
+  const outlet = await Outlet.findById(id);
+  if (!outlet) {
+    throw new Error("Outlet not found");
+  }
+  return {
+    outlet: {
+      id: outlet._id,
+      outletName: outlet.outletName,
+      emailAddress: outlet.emailAddress,
+      userType: outlet.userType, // Include userType in the response
+      createdAt: outlet.createdAt,
+    },
+  };
 };
 
 // Get All Outlets
 const getAllOutlets = async () => {
-  return await Outlet.find();
+  const outlets = await Outlet.find(); // Fetch all outlets
+  return outlets.map((outlet) => ({
+    ...outlet.toObject(), // Convert the Mongoose document to a plain object
+    id: outlet._id, // Rename _id to id for consistency
+  }));
 };
+
 
 module.exports = {
   createOutlet,

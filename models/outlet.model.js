@@ -4,46 +4,66 @@ const OutletSchema = new mongoose.Schema(
   {
     outletName: {
       type: String,
-      required: true, // Name of the outlet
+      required: true,
       trim: true,
     },
     outletAddress: {
       type: String,
-      required: true, // Address of the outlet
+      required: true,
       trim: true,
     },
     registrationNumber: {
       type: String,
-      required: true, // Unique registration number of the outlet
+      required: true,
       unique: true,
       trim: true,
     },
     emailAddress: {
       type: String,
-      required: true, // Email address of the outlet
+      required: true,
       unique: true,
       lowercase: true,
       trim: true,
     },
     password: {
-      type: String, // Password for the outlet login
+      type: String,
     },
     image: {
-      type: String, // Path or URL to the outlet's image
+      type: String,
     },
     certificate: {
-      type: String, // Path or URL to the certificate file
+      type: String,
     },
     longitude: {
-      type: Number, // Longitude coordinate of the outlet
+      type: Number,
       required: true,
     },
     latitude: {
-      type: Number, // Latitude coordinate of the outlet
+      type: Number,
       required: true,
     },
+    userType: {
+      type: String,
+      required: true,
+      default: "outlet",
+      enum: ["outlet"],
+    },
+    gasStock: [
+      {
+        gas: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Gas", // Reference to Gas schema
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true, // Quantity of this gas type and weight at the outlet
+          default: 0,
+        },
+      },
+    ],
   },
-  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Outlet", OutletSchema);

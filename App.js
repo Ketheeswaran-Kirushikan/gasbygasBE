@@ -20,11 +20,16 @@ const dispatchRoutes = require("./routes/dipatch.routes");
 const loginRoutes = require("./routes/Auth.routes");
 const outletRoutes = require("./routes/outlet.routes");
 const gasRequestRoutes = require("./routes/gasrequest.routes");
+const gasRoutes = require("./routes/gas.routes");
+const notificationRoutes = require("./routes/notification.routes");
 app.use("/api/users", userRoutes); // Use routes for user management
 app.use("/api/auth", loginRoutes); // Use routes for login management
 app.use("/api/dispatch", dispatchRoutes); // Use routes for dispatch management
 app.use("/api/outlet",outletRoutes)
 app.use("/api/gasrequest", gasRequestRoutes); // Use routes for gas request management
+app.use("/api/gas", gasRoutes); // Use routes for gas
+
+app.use("/api/notifications", notificationRoutes); // Use routes for notification management
 
 // Start the server
 const PORT = process.env.URL_PORT;

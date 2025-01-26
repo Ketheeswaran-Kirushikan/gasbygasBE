@@ -11,6 +11,12 @@ const DispatchSchema = new mongoose.Schema(
       type: String,
       required: true, // Password for dispatch admin authentication
     },
+    userType: {
+      type: String,
+      required: true,
+      default: "dispatch", // To identify this as a dispatch user
+      enum: ["dispatch"], // Fixed userType for dispatch
+    },
   },
   { timestamps: true } // Automatically adds createdAt and updatedAt fields
 );
