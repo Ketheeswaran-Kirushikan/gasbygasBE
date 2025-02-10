@@ -17,12 +17,13 @@ const createOutlet = async (req, res) => {
   const updateOutletById = async (req, res) => {
     try {
       const { id } = req.params;
+      console.log(id)
       const updatedOutlet = await OutletService.updateOutletById(
         id,
         req.body,
         req.files
       );
-  
+      
       if (!updatedOutlet) {
         return res.status(404).json({ error: "Outlet not found." });
       }

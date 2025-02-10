@@ -30,14 +30,16 @@ const createUser = async (data, file) => {
   return await User.create(userData);
 };
 
-// Update User by ID
 const updateUserById = async (id, data, file) => {
   let updatedData = { ...data };
 
-  // Update the image if a new file is provided
+  // Upload image to Cloudinary if a file is provided
   if (file) {
-    const result = await cloudinary.uploader.upload(file.path);
-    updatedData.image = result.secure_url;
+    try {
+      const result = await cloudinary.uploader.upload(file.path);
+      updatedData.image = result.secure_url; // Save Cloudinary URL
+    } catch (error) {
+    }
   }
 
   // Hash the new password if provided
@@ -45,9 +47,10 @@ const updateUserById = async (id, data, file) => {
     updatedData.password = await bcrypt.hash(data.password, 10);
   }
 
-  // Update the user in the database
+  // Update user in database
   return await User.findByIdAndUpdate(id, updatedData, { new: true });
 };
+
 
 // Delete User by ID
 const deleteUserById = async (id) => {

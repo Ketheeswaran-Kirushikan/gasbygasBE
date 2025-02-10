@@ -105,7 +105,6 @@ const createOutlet = async (data, files) => {
   }
 };
 
-// Update Outlet by ID
 const updateOutletById = async (id, data, files) => {
   try {
     let updatedData = { ...data };
@@ -117,9 +116,22 @@ const updateOutletById = async (id, data, files) => {
       updatedData.longitude = longitude;
     }
 
-    // Check if a new password is provided, and hash it
-    if (data.password) {
-      updatedData.password = await bcrypt.hash(data.password, 10);
+    // Check if a new password is provided
+    if (data.newPassword) {
+      // Fetch the current outlet to compare the old password
+      const outlet = await Outlet.findById(id);
+      if (!outlet) {
+        throw new Error('Outlet not found');
+      }
+
+      // Compare the old password
+      const isPasswordCorrect = await bcrypt.compare(data.currentPassword, outlet.password);
+      if (!isPasswordCorrect) {
+        throw new Error('Old password is incorrect');
+      }
+
+      // Hash the new password
+      updatedData.password = await bcrypt.hash(data.newPassword, 10);
     }
 
     if (files?.image) {
@@ -153,6 +165,7 @@ const updateOutletById = async (id, data, files) => {
   }
 };
 
+
 // Delete Outlet by ID
 const deleteOutletById = async (id) => {
   const deletedOutlet = await Outlet.findByIdAndDelete(id);
@@ -166,16 +179,26 @@ const deleteOutletById = async (id) => {
 // Get Outlet by ID
 const getOutletById = async (id) => {
   const outlet = await Outlet.findById(id);
+
   if (!outlet) {
     throw new Error("Outlet not found");
   }
+
   return {
     outlet: {
       id: outlet._id,
       outletName: outlet.outletName,
+      outletAddress: outlet.outletAddress,
+      registrationNumber: outlet.registrationNumber,
       emailAddress: outlet.emailAddress,
-      userType: outlet.userType, // Include userType in the response
+      userType: outlet.userType, // Include userType
       createdAt: outlet.createdAt,
+      updatedAt: outlet.updatedAt,
+      longitude: outlet.longitude,
+      latitude: outlet.latitude,
+      gasStock: outlet.gasStock, // Include the gas stock details
+      image: outlet.image,
+      certificate: outlet.certificate,
     },
   };
 };

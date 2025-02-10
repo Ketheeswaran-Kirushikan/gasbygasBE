@@ -15,7 +15,6 @@ const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const updatedUser = await UserService.updateUserById(id, req.body, req.file);
-
     if (!updatedUser) {
       return res.status(404).json({ error: "User not found" });
     }

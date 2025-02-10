@@ -2,6 +2,7 @@ const GasRequestService = require("../services/gasRequest.service");
 
 // Create Gas Request
 const createGasRequest = async (req, res) => {
+  console.log(req.body)
   try {
     const gasRequest = await GasRequestService.createGasRequest(req.body, req.file);
     res.status(201).json({

@@ -50,15 +50,28 @@ const OutletSchema = new mongoose.Schema(
     },
     gasStock: [
       {
-        gas: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Gas", // Reference to Gas schema
+        gasType: {
+          type: String,
           required: true,
+          enum: ["Domestic", "Industrial"], // Gas type options
+        },
+        weight: {
+          type: Number,
+          required: true, // Gas weight (e.g., 5kg, 12.5kg, 37.5kg)
         },
         quantity: {
           type: Number,
-          required: true, // Quantity of this gas type and weight at the outlet
+          required: true, // Number of cylinders available
           default: 0,
+        },
+        price: {
+          type: Number,
+          required: true,
+          min: 0, // Ensuring non-negative price
+        },
+        individualPrice:{
+            type: Number,
+            required: true,
         },
       },
     ],

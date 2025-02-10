@@ -22,12 +22,15 @@ const outletRoutes = require("./routes/outlet.routes");
 const gasRequestRoutes = require("./routes/gasrequest.routes");
 const gasRoutes = require("./routes/gas.routes");
 const notificationRoutes = require("./routes/notification.routes");
+const stockRoute = require("./routes/stockRequest.routes");
 app.use("/api/users", userRoutes); // Use routes for user management
 app.use("/api/auth", loginRoutes); // Use routes for login management
 app.use("/api/dispatch", dispatchRoutes); // Use routes for dispatch management
 app.use("/api/outlet",outletRoutes)
 app.use("/api/gasrequest", gasRequestRoutes); // Use routes for gas request management
 app.use("/api/gas", gasRoutes); // Use routes for gas
+app.use("/api/stockRequest",stockRoute)
+
 
 app.use("/api/notifications", notificationRoutes); // Use routes for notification management
 
