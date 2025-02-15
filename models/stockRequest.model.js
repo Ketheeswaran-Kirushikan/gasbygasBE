@@ -16,7 +16,6 @@ const StockRequestSchema = new mongoose.Schema(
       {
         gasType: {
           type: String,
-          enum: ["Domestic", "Industrial"], // Can be expanded
           required: true,
         },
         weight: {

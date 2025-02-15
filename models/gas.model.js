@@ -5,7 +5,6 @@ const GasSchema = new mongoose.Schema(
     type: {
       type: String,
       required: true,
-      enum: ["Domestic", "Industrial"], // Two gas types
     },
     weight: {
       type: Number,

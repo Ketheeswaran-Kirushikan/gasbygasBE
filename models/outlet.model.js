@@ -53,7 +53,6 @@ const OutletSchema = new mongoose.Schema(
         gasType: {
           type: String,
           required: true,
-          enum: ["Domestic", "Industrial"], // Gas type options
         },
         weight: {
           type: Number,

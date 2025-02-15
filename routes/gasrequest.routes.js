@@ -28,4 +28,7 @@ router.get("/getall/outlet/:outletId", GasRequestController.getAllGasRequestsByO
 
 router.get("/getall/user/:userId", GasRequestController.getAllGasRequestsByUser);
 
+router.get("/getall/dispatch/:id", GasRequestController.getAllGasRequestsByDispatch);
+
+
 module.exports = router;

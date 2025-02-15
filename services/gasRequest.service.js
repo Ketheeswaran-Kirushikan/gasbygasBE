@@ -77,6 +77,7 @@ const createGasRequest = async (data, file) => {
   };
 
   const newGasRequest = await GasRequest.create(gasRequestData);
+  console.log("pun",newGasRequest)
 
   // Send Notification
   const notificationMessage = `New gas request created by ${
@@ -154,59 +155,51 @@ const updateGasRequestById = async (referenceNumber, data, file) => {
     { new: true }
   );
 
-  // Send payment-related notification and email
-  if (paymentUpdated) {
+  // ✅ Send notification to user
+  if (paymentUpdated || updatedGasRequest.status !== gasRequest.status) {
     if (gasRequest.userDetails) {
       await sendNotification({
         userId: gasRequest.userDetails,
         message: notificationMessage,
       });
-      console.log(`Notification to User (ID: ${gasRequest.userDetails}): ${notificationMessage}`);
 
       const user = await User.findById(gasRequest.userDetails);
       if (user && user.email) {
         await sendEmail({
           recipientEmail: user.email,
-          subject: `Gas Request Payment Update - Reference: ${referenceNumber}`,
+          subject: `Gas Request Update - Reference: ${referenceNumber}`,
           message: notificationMessage,
         });
-        console.log(`Email sent to User (Email: ${user.email}): ${notificationMessage}`);
       }
     }
   }
 
-  // Handle status updates only if the status has changed
+  // ✅ Handle status updates for dispatch notification
   if (updatedGasRequest.status !== gasRequest.status) {
     if (updatedGasRequest.status === "approved") {
-      notificationMessage = `Your request (Reference: ${referenceNumber}) has been approved by ${
-        gasRequest.outletDetails ? "the outlet" : "dispatch"
-      }. You need to pay your amount ${gasRequest.price} and hand over the cylinders within 2 days. If not, your request will be rejected by ${
-        gasRequest.outletDetails ? "the outlet" : "dispatch"
-      }.`;
+      notificationMessage = `Gas request (Reference: ${referenceNumber}) has been approved. User must complete payment of ${gasRequest.price} and hand over cylinders within 2 days.`;
     } else if (updatedGasRequest.status === "rejected") {
-      notificationMessage = `Your request (Reference: ${referenceNumber}) has been rejected by ${
-        gasRequest.outletDetails ? "the outlet" : "dispatch"
-      }.`;
+      notificationMessage = `Gas request (Reference: ${referenceNumber}) has been rejected.`;
     } else {
-      notificationMessage = `Your request (Reference: ${referenceNumber}) is now in '${updatedGasRequest.status}' status.`;
+      notificationMessage = `Gas request (Reference: ${referenceNumber}) is now in '${updatedGasRequest.status}' status.`;
     }
 
-    // Send status-related notifications
-    if (gasRequest.userDetails) {
+    // ✅ Notify Dispatch (New Logic)
+    if (gasRequest.dispatchDetails) {
       await sendNotification({
-        userId: gasRequest.userDetails,
-        message: notificationMessage,
+        userId: gasRequest.dispatchDetails,
+        message: `DISPATCH ALERT: ${notificationMessage}`,
       });
-      console.log(`Notification to User (ID: ${gasRequest.userDetails}): ${notificationMessage}`);
 
-      const user = await User.findById(gasRequest.userDetails);
-      if (user && user.email) {
+
+      // ✅ Send Email to Dispatch (if applicable)
+      const dispatchAdmin = await User.findById(gasRequest.dispatchDetails);
+      if (dispatchAdmin && dispatchAdmin.email) {
         await sendEmail({
-          recipientEmail: user.email,
-          subject: `Gas Request Status Update - Reference: ${referenceNumber}`,
+          recipientEmail: dispatchAdmin.email,
+          subject: `Gas Request Dispatch Update - Reference: ${referenceNumber}`,
           message: notificationMessage,
         });
-        console.log(`Email sent to User (Email: ${user.email}): ${notificationMessage}`);
       }
     }
   }
@@ -215,13 +208,19 @@ const updateGasRequestById = async (referenceNumber, data, file) => {
 };
 
 // Delete Gas Request by ID
-const deleteGasRequestById = async (id) => {
-  const deletedGasRequest = await GasRequest.findByIdAndDelete(id);
+const deleteGasRequestByReferenceNumber = async (referenceNumber) => {
+  console.log(`Deleting Gas Request with Reference Number:`, referenceNumber); // ✅ Debugging log
+
+  // Find and delete the gas request using referenceNumber
+  const deletedGasRequest = await GasRequest.findOneAndDelete({ referenceNumber });
 
   if (!deletedGasRequest) {
-    throw new Error("Gas request not found");
+    throw new Error(`Gas request with referenceNumber ${referenceNumber} not found`);
   }
 
+  console.log(`✅ Successfully Deleted Gas Request:`, deletedGasRequest);
+
+  // Send notifications if needed
   const notificationMessage = `Gas request ${deletedGasRequest.referenceNumber} has been deleted.`;
 
   if (deletedGasRequest.outletDetails) {
@@ -263,11 +262,20 @@ const getAllGasRequestsByUser = async (userId) => {
   return gasRequests;
 };
 
+// Get All Gas Requests for a Specific User
+const getAllGasRequestsByDispatch = async (id) => {
+  const gasRequests = await GasRequest.find({ dispatchDetails: id }).populate(
+    "userDetails"
+  );
+  return gasRequests;
+};
+
 module.exports = {
   createGasRequest,
   updateGasRequestById,
-  deleteGasRequestById,
+  deleteGasRequestByReferenceNumber,
   getGasRequestById,
   getAllGasRequestsByOutlet,
   getAllGasRequestsByUser,
+  getAllGasRequestsByDispatch
 };

@@ -48,7 +48,8 @@ const updateGasRequestById = async (req, res) => {
 const deleteGasRequestById = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedGasRequest = await GasRequestService.deleteGasRequestById(id);
+    console.log(id);
+    const deletedGasRequest = await GasRequestService.deleteGasRequestByReferenceNumber(id);
 
     if (!deletedGasRequest) {
       return res.status(404).json({ error: "Gas Request not found" });
@@ -103,6 +104,21 @@ const getAllGasRequestsByUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+// Get All Gas Requests by User ID
+const getAllGasRequestsByDispatch = async (req, res) => {
+  try {
+    const { id } = req.params; // Get userId from request parameters
+    const gasRequests = await GasRequestService.getAllGasRequestsByDispatch(id);
+
+    if (!gasRequests.length) {
+      return res.status(404).json({ error: "No gas requests found for this user" });
+    }
+
+    res.status(200).json(gasRequests);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 module.exports = {
   createGasRequest,
@@ -111,4 +127,5 @@ module.exports = {
   getGasRequestById,
   getAllGasRequestsByOutlet,
   getAllGasRequestsByUser, // Add this function
+  getAllGasRequestsByDispatch
 };
