@@ -3,12 +3,11 @@ const router = express.Router();
 const multer = require("../middleware/multer.middle");
 const OutletController = require("../controllers/outlet.controller");
 
-const authenticateDispatch = require("../middleware/authenticatedDispatch");
+// const authenticateDispatch = require("../middleware/authenticatedDispatch");
 
 // Routes for Outlet
 router.post(
   "/create",
-  authenticateDispatch,
   multer.fields([{ name: "image" }, { name: "certificate" }]),
   OutletController.createOutlet
 );
